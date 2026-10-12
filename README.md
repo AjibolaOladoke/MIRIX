@@ -1,10 +1,18 @@
-[![Mirix Logo](https://github.com/RenKoya1/MIRIX/raw/main/assets/logo.png)](https://www.swifttechco.com)
+# MIRIX
+
+## What This Is
+
+Every project needs a shelf of ready answers. product and engineering is one of those shelves, and MIRIX is the entry on it - the notes, patterns and fixes we reuse when this kind of work comes up.
+
+## Images
+
+[![MIRIX](images/preview.png)](https://github.com/Swift-Tech-Co)
 
 ## MIRIX - Multi-Agent Personal Assistant with an Advanced Memory System
 
 Your personal AI that builds memory through screen observation and natural conversation
 
-| 🌐 [Website](https://www.swifttechco.com) | 📚 [Documentation](https://www.swifttechco.com) | 📄 [Paper](https://www.swifttechco.com) | 💬 [Telegram](https://t.me/+Qt_eFvkb2rliMzNh)
+| 🌐 Website | 📚 Documentation | 📄 Paper | 💬 [Telegram](https://t.me/+Qt_eFvkb2rliMzNh)
 
 ---
 
@@ -85,99 +93,8 @@ client.add(
     session_id="sess-demo-001",
 )
 
-# Include tool activity when you want skills learned from the WORK PROCESS:
 
-## Images
 
-[![MIRIX](https://opengraph.githubassets.com/1/Mirix-AI/MIRIX)](https://www.swifttechco.com)
-
-# tool errors, retries, and the fix that finally worked are the distiller's
-# strongest signals. Pass tool results as role="tool" turns and/or a
-# "tool_calls" list on assistant messages (OpenAI shape)  both are preserved
-# in the session conversation store.
-client.add(
-    user_id="demo-user",
-    messages=[
-        {"role": "user", "content": [{"type": "text", "text": "Deploy the service."}]},
-        {"role": "assistant", "content": "", "tool_calls": [
-            {"function": {"name": "kubectl_apply", "arguments": "{\"file\": \"deploy.yaml\"}"}}
-        ]},
-        {"role": "tool", "name": "kubectl_apply", "content": "error: forbidden (missing RBAC)"},
-        {"role": "assistant", "content": [{"type": "text", "text": "Fixed the RBAC role and redeployed successfully."}]},
-    ],
-    session_id="sess-demo-001",
-)
-
-memories = client.retrieve_with_conversation(
-    user_id="demo-user",
-    messages=[
-        {"role": "user", "content": [{"type": "text", "text": "What did we discuss on MirixDB in last 4 days?"}]},
-    ],
-    limit=5,
-)
-print(memories)
-```
-For more API examples, see `samples/run_client.py`.
-
-### Auto-Dream Memory Consolidation
-
-MIRIX also exposes an auto-dream endpoint for explicit memory cleanup and consolidation. Auto-dream reviews existing memories, merges duplicates, resolves stale/conflicting entries where possible, and writes the result back through the memory tools.
-
-**REST endpoint:**
-```http
-POST /memory/auto_dream?user_id=demo-user
-Content-Type: application/json
-
-{
-  "mode": "experience",
-  "dry_run": false
-}
-```
-
-Supported `mode` values:
-
-| Mode | Memory component(s) reviewed |
-|---|---|
-| `core` | Core memory blocks |
-| `episodic` | Episodic memories |
-| `semantic` | Semantic memories |
-| `resource` | Resource memories |
-| `procedural` | Procedural memories |
-| `knowledge` | Knowledge Vault memories |
-| `experience` | Episodic, Semantic, and Knowledge Vault memories together |
-
-Use `dry_run: true` to fetch counts and inspect what would be processed without applying updates. The optional `model` field can override the auto-dream agent model for that request. For procedural mode, pass the target `meta_agent_id` and optionally `last_n_sessions` to distill recent session experiences.
-
-Python client example:
-```python
-result = client.auto_dream(
-    user_id="demo-user",
-    mode="procedural",
-    meta_agent_id=meta_agent.id,
-    last_n_sessions=3,
-    dry_run=False,
-)
-print(result)
-```
-
-### Upgrading an Existing Database
-
-Fresh databases get their full schema automatically at startup. **Existing databases require manual migrations** when upgrading to a version that alters tables  startup creates missing tables but never adds columns to existing ones. If migrations are pending, the server refuses to start and names the exact scripts to run.
-
-For the skill-based procedural memory release, run against your database (in this order):
-
-```bash
-psql "$MIRIX_PG_URI" -f scripts/migrate_procedural_to_skill.sql
-psql "$MIRIX_PG_URI" -f scripts/migrate_add_message_session_id.sql
-psql "$MIRIX_PG_URI" -f scripts/migrate_add_message_session_id_phase2.sql   # outside a transaction (CREATE INDEX CONCURRENTLY)
-psql "$MIRIX_PG_URI" -f scripts/migrate_add_conversation_message.sql
-psql "$MIRIX_PG_URI" -f scripts/migrate_add_conversation_message_phase2.sql # outside a transaction
-psql "$MIRIX_PG_URI" -f scripts/migrate_add_skill_experience.sql
-psql "$MIRIX_PG_URI" -f scripts/migrate_add_agent_trigger_state.sql
-psql "$MIRIX_PG_URI" -f scripts/migrate_backfill_procedural_scope.sql   # backfill filter_tags['scope'] from each skill's owning client
-```
-
-Each script is idempotent where possible and documents its own preconditions in its header. Run them once, then restart the server.
 
 ## License
 
@@ -202,7 +119,7 @@ We host weekly discussion sessions where you can:
 - Connect with the development team and community
 
 **📅 Schedule:** Friday nights, 8-9 PM PST
-**🔗 Zoom Link:** [https://www.swifttechco.com](https://www.swifttechco.com)
+**🔗 Zoom Link:** https://www.swifttechco.com
 
 ### 📱 WeChat Group
 You can add the account `ari_asm` so that I can add you to the group chat.
@@ -217,14 +134,22 @@ AI Automation | FinTech Platforms | Custom Software and Mobile Apps | SaaS Platf
 
 **Join our community on Telegram:** [t.me/+Qt_eFvkb2rliMzNh](https://t.me/+Qt_eFvkb2rliMzNh)
 
-[Home](https://www.swifttechco.com) | [Services](https://www.swifttechco.com/services) | [Careers](https://www.swifttechco.com/careers) | [Referral Program](https://www.swifttechco.com/referral) | [Influencers](https://www.swifttechco.com/influencers) | [About](https://www.swifttechco.com/about) | [Contact](https://www.swifttechco.com/contact)
+Home | Services | Careers | Referral Program | Influencers | About | Contact
 
 **Connect**
 
-- Website: [swifttechco.com](https://www.swifttechco.com)
+- Website: swifttechco.com
 - LinkedIn: [linkedin.com/in/stephenoladoke](https://www.linkedin.com/in/stephenoladoke/)
 - LinkedIn (Company): [linkedin.com/company/swift-tech-co](https://www.linkedin.com/company/swift-tech-co)
 - X: [@MrOladoke](https://x.com/MrOladoke)
 - Instagram: [@mr.oladoke](https://www.instagram.com/mr.oladoke/)
 - Instagram (Company): [@swifttechco](https://www.instagram.com/swifttechco/)
 - Organization: [github.com/Swift-Tech-Co](https://github.com/Swift-Tech-Co)
+
+## Sources
+
+Compiled and maintained from upstream [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX) under permissive open-source license.
+
+---
+
+Maintained by [Swift Tech Co.](https://github.com/Swift-Tech-Co) - [Telegram](https://t.me/+Qt_eFvkb2rliMzNh)
