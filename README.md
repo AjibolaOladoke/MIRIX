@@ -153,3 +153,11 @@ Compiled and maintained from upstream [Mirix-AI/MIRIX](https://github.com/Mirix-
 ---
 
 Maintained by [Swift Tech Co.](https://github.com/Swift-Tech-Co) - [Telegram](https://t.me/+Qt_eFvkb2rliMzNh)
+
+## Sources
+
+Compiled and maintained from upstream [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX) under permissive open-source license.
+
+---
+
+Maintained by [Swift Tech Co.](https://github.com/Swift-Tech-Co) - [Telegram](https://t.me/+Qt_eFvkb2rliMzNh)
